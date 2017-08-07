@@ -52,6 +52,11 @@ set timeout
 set timeoutlen=1000
 set ttimeout
 set ttimeoutlen=10
+" diff in vertical
+set diffopt+=vertical
+" split below or split right
+set splitbelow
+set splitright
 " }}}
 
 " GUI {{{
@@ -96,6 +101,21 @@ nmap <Leader>tn :tabnew<cr>
 nmap <Leader>tc :tabclose<cr>
 nmap <Leader>th :tabp<cr>
 nmap <Leader>tl :tabn<cr>
+
+nmap <Leader>sh :split<cr>
+nmap <Leader>sv :vsplit<cr>
+nmap <Leader>sa <C-w><
+nmap <Leader>sd <C-w>>
+nmap <Leader>ss <C-w>-
+nmap <Leader>sw <C-w>+
+
+if has("nvim")
+    nmap <Leader>sth :split<space>term://zsh<cr>i
+    nmap <Leader>stv :vsplit<space>term://zsh<cr>i
+else
+    nmap <Leader>sth :terminal<cr>
+    nmap <Leader>stv :vsplit<cr>:terminal<cr><C-w>k:q<cr>
+endif
 " }}}
 
 " Plugin {{{
@@ -134,7 +154,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = "g++"
 let g:syntastic_cpp_compiler_options = "-Wall -Wextra -Werror -std=c++14"
-let g:syntastic_cpp_include_dirs = ["/usr/local/lib", "/usr/local/include"]
+let g:syntastic_cpp_include_dirs = ["/usr/local/lib", "/usr/local/include", "../src"]
 " }}}
 
 " Surround {{{
@@ -227,10 +247,11 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 " Asyncrun {{{
 Plug 'skywind3000/asyncrun.vim'
-augroup AsyncRun
-    autocmd!
-    autocmd User AsyncRunStart call asyncrun#quickfix_toggle(10, 1)
-augroup END
+let g:asyncrun_bell = 1
+" }}}
+
+" WindowSwap {{{
+Plug 'wesQ3/vim-windowswap'
 " }}}
 
 " Initialize plugin system
