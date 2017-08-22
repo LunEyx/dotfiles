@@ -57,14 +57,28 @@ set diffopt+=vertical
 " split below or split right
 set splitbelow
 set splitright
+" system clipboard synconize with vim
+set clipboard=unnamed
 " }}}
 
 " GUI {{{
 colorscheme luna-term
-
-if has('gui_running')
-    colorscheme luna
-    set bg=dark
+if has('win32') || has('win64')
+    if has('gui_running')
+        colorscheme luna
+        " disable
+        set guioptions-=T
+        set guioptions-=m
+        set guioptions-=L
+        set guioptions-=r
+        set guioptions-=b
+        " using internal tab instead of gui format
+        set guioptions-=e
+        set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,DejaVu\ Sans\ Mono:h14,Consolas:h15
+    elseif has('nvim')
+        colorscheme luna
+    endif
+elseif has('gui_running')
     set guifont=DejaVu_Sans_Mono_Nerd_Font_Complete:h16
 endif
 
@@ -146,15 +160,26 @@ let g:NERDSpaceDelims=1
 " }}}
 
 " Syntastic {{{
-Plug 'scrooloose/syntastic'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_compiler = "g++"
-let g:syntastic_cpp_compiler_options = "-Wall -Wextra -Werror -std=c++14"
-let g:syntastic_cpp_include_dirs = ["/usr/local/lib", "/usr/local/include", "../src"]
+" Plug 'scrooloose/syntastic'
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_cpp_check_header = 1
+" let g:syntastic_cpp_compiler = "g++"
+" let g:syntastic_cpp_compiler_options = "-Wall -Wextra -Werror -std=c++14"
+" let g:syntastic_cpp_include_dirs = ["/usr/local/lib", "/usr/local/include", "../src"]
+" }}}
+
+" ALE {{{
+Plug 'w0rp/ale'
+" Write this in your vimrc file
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_open_list = 1
+let g:ale_linters = {
+\   'cpp': ['clang', 'gcc'],
+\}
+let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++14 -I src'
 " }}}
 
 " Surround {{{
@@ -254,6 +279,11 @@ let g:asyncrun_bell = 1
 Plug 'wesQ3/vim-windowswap'
 " }}}
 
+" ctrlP {{{
+Plug 'kien/ctrlp.vim'
+let g:ctrlp_map = '<leader>f'
+" }}}
+
 " Initialize plugin system
 call plug#end()
 " }}}
@@ -271,16 +301,26 @@ augroup END
 " .c {{{
 augroup ft_c
     autocmd!
-    autocmd Filetype c nnoremap <F3> :AsyncRun clang -Wall -Wextra -pedantic -o %< %<cr>
-    autocmd Filetype c nnoremap <F4> :!./%:r<cr>
+    if has('win32') || has('win64')
+        autocmd Filetype c nnoremap <F3> :AsyncRun clang -Wall -Wextra -pedantic -o %<.exe %<cr>
+        autocmd Filetype c nnoremap <F4> :!%:r<cr>
+    else
+        autocmd Filetype c nnoremap <F3> :AsyncRun clang -Wall -Wextra -pedantic -o %< %<cr>
+        autocmd Filetype c nnoremap <F4> :!./%:r<cr>
+    endif
 augroup END
 " }}}
 
 " .cpp {{{
 augroup ft_cpp
     autocmd!
-    autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -Werror -std=c++14 -o %< %<cr>
-    autocmd Filetype cpp nnoremap <F4> :!./%:r<cr>
+    if has('win32') || has('win64')
+        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -Werror -std=c++14 -o %<.exe %<cr>
+        autocmd Filetype cpp nnoremap <F4> :AsyncRun %<<cr>
+    else
+        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -Werror -std=c++14 -o %< %<cr>
+        autocmd Filetype cpp nnoremap <F4> :AsyncRun ./%:r<cr>
+    endif
 augroup END
 " }}}
 
