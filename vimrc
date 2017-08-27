@@ -102,8 +102,8 @@ nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :noh
 
 " <F6> not used yet
 nmap <F7> :AsyncRun<space>
-nmap <F8> :TagbarToggle<cr>
-nmap <F9> :NERDTreeToggle<cr>
+nmap <F8> :NERDTreeToggle<cr>
+nmap <F9> :TagbarToggle<cr>
 nmap <F10> :call asyncrun#quickfix_toggle(10)<CR>
 
 nmap <C-j> <C-w>j
@@ -149,7 +149,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeWinPos = "right"
+" let g:NERDTreeWinPos = "right"
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '~'
 " }}}
@@ -280,8 +280,13 @@ Plug 'wesQ3/vim-windowswap'
 " }}}
 
 " ctrlP {{{
-Plug 'kien/ctrlp.vim'
-let g:ctrlp_map = '<leader>f'
+" Plug 'kien/ctrlp.vim'
+" let g:ctrlp_map = '<leader>f'
+" }}}
+
+" FZF {{{
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 " }}}
 
 " Initialize plugin system
