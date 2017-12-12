@@ -106,6 +106,36 @@ nmap <F8> :NERDTreeToggle<cr>
 nmap <F9> :TagbarToggle<cr>
 nmap <F10> :call asyncrun#quickfix_toggle(10)<CR>
 
+function! GetBufferList()
+  redir =>buflist
+  silent! ls!
+  redir END
+  return buflist
+endfunction
+
+function! ToggleList(bufname, pfx)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
+    endif
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+    wincmd p
+  endif
+endfunction
+
+nmap <silent> <leader><leader>l :call ToggleList("Location List", 'l')<CR>
+nmap <silent> <leader>ll :call ToggleList("Quickfix List", 'c')<CR>
+
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-h> <C-w>h
@@ -149,7 +179,6 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" let g:NERDTreeWinPos = "right"
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '~'
 " }}}
@@ -159,27 +188,15 @@ Plug 'scrooloose/nerdcommenter'
 let g:NERDSpaceDelims=1
 " }}}
 
-" Syntastic {{{
-" Plug 'scrooloose/syntastic'
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_cpp_check_header = 1
-" let g:syntastic_cpp_compiler = "g++"
-" let g:syntastic_cpp_compiler_options = "-Wall -Wextra -Werror -std=c++14"
-" let g:syntastic_cpp_include_dirs = ["/usr/local/lib", "/usr/local/include", "../src"]
-" }}}
-
 " ALE {{{
 Plug 'w0rp/ale'
 " Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_open_list = 1
 let g:ale_linters = {
-\   'cpp': ['clang', 'gcc'],
+\   'cpp': ['clang'],
 \}
-let g:ale_cpp_clang_options = '-Wall -Wextra -std=c++14 -I src'
+let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -I src'
+let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
 " Surround {{{
@@ -230,20 +247,6 @@ Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 " }}}
 
-" SuperTab {{{
-Plug 'ervandew/supertab'
-" }}}
-
-" Snippets {{{
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-j>"
-let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
-let g:UltiSnipsListSnippets = "<C-l>"
-" }}}
-
 " Swift {{{
 Plug 'bumaociyuan/vim-swift', { 'for': 'swift' }
 let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
@@ -289,6 +292,33 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " }}}
 
+" vim-beancount {{{
+Plug 'nathangrigg/vim-beancount'
+let b:beancount_root="./journal.beancount"
+" }}}
+
+" NCM {{{
+Plug 'roxma/nvim-completion-manager'
+" Plug 'roxma/ncm-clang'
+imap <expr> <CR>  (pumvisible() ?  "\<c-y>\<Plug>(expand_or_nl)" : "\<CR>")
+imap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-J>":"")
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+Plug 'roxma/clang_complete'
+let g:clang_library_path='/usr/local/opt/llvm/lib'
+" }}}
+
+" Snippets {{{
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<C-j>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+let g:UltiSnipsListSnippets = "<C-l>"
+let g:UltiSnipsRemoveSelectModeMappings = 0
+" }}}
+
 " Initialize plugin system
 call plug#end()
 " }}}
@@ -307,10 +337,10 @@ augroup END
 augroup ft_c
     autocmd!
     if has('win32') || has('win64')
-        autocmd Filetype c nnoremap <F3> :AsyncRun clang -Wall -Wextra -pedantic -o %<.exe %<cr>
+        autocmd Filetype c nnoremap <F3> :AsyncRun clang -o %<.exe %<cr>
         autocmd Filetype c nnoremap <F4> :!%:r<cr>
     else
-        autocmd Filetype c nnoremap <F3> :AsyncRun clang -Wall -Wextra -pedantic -o %< %<cr>
+        autocmd Filetype c nnoremap <F3> :AsyncRun clang -o %< %<cr>
         autocmd Filetype c nnoremap <F4> :!./%:r<cr>
     endif
 augroup END
@@ -320,12 +350,21 @@ augroup END
 augroup ft_cpp
     autocmd!
     if has('win32') || has('win64')
-        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -Werror -std=c++14 -o %<.exe %<cr>
+        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -std=c++14 -o %<.exe %<cr>
         autocmd Filetype cpp nnoremap <F4> :AsyncRun %<<cr>
     else
-        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -Werror -std=c++14 -o %< %<cr>
+        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -std=c++14 -o %< %<cr>
+        autocmd Filetype cpp nnoremap <F15> :AsyncRun clang++ -Wall -Wextra -Werror -std=c++14 -o %< %<cr>
         autocmd Filetype cpp nnoremap <F4> :AsyncRun ./%:r<cr>
     endif
+augroup END
+" }}}
+
+" .java {{{
+augroup ft_java
+    autocmd!
+    autocmd Filetype java nnoremap <F3> :AsyncRun javac %<cr>
+    autocmd Filetype java nnoremap <F4> :AsyncRun java %< <cr>
 augroup END
 " }}}
 
@@ -333,7 +372,7 @@ augroup END
 augroup ft_py
     autocmd!
     autocmd Filetype py nnoremap <F3> :AsyncRun python %<cr>
-    autocmd Filetype py nnoremap <F4> :!python %<cr>
+    autocmd Filetype py nnoremap <F4> :AsyncRun python %<cr>
 augroup END
 " }}}
 
@@ -350,6 +389,15 @@ augroup ft_swift
     autocmd!
     autocmd Filetype swift nnoremap <F3> :AsyncRun swiftc %<cr>
     autocmd Filetype swift nnoremap <F4> :!swift %<cr>
+augroup END
+" }}}
+
+" .bean/.beancount {{{
+augroup ft_beancount
+    autocmd!
+    autocmd Filetype beancount setlocal foldenable!
+    autocmd Filetype beancount nnoremap <F3> :!bean-check journal.beancount<cr>
+    autocmd Filetype beancount nnoremap <F4> :AsyncRun bean-web %<cr>
 augroup END
 " }}}
 

@@ -9,7 +9,8 @@ export ZSH=$HOME/.oh-my-zsh
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="bullet-train"
 
-BULLETTRAIN_CONTEXT_DEFAULT_USER="LunEyx"
+BULLETTRAIN_CONTEXT_DEFAULT_USER="luneyx"
+BULLETTRAIN_CONTEXT_DEFAULT_USERNAME="LunEyx"
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -85,10 +86,12 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vim=nvim
-alias cds='cd $(find ~ -type d | fzf)'
+alias vimf='nvim $(fzf)'
+alias cds='cd "$(find ~ -type d | fzf --preview='"'"'ls {}'"'"')"'
 export FZF_DEFAULT_OPTS=' --height 40%'
 
+# Add LLVM to PATH
+export PATH="$PATH:/usr/local/opt/llvm/bin"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

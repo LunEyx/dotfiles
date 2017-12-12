@@ -336,7 +336,7 @@ context() {
   elif [[ $UID -eq 0 ]]; then
     echo -n "%F{yellow} ${user}"
   else
-    echo -n " ${user}"
+    echo -n " $BULLETTRAIN_CONTEXT_DEFAULT_USERNAME"
   fi
 }
 
