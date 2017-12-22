@@ -193,9 +193,10 @@ Plug 'w0rp/ale'
 " Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters = {
+\    'c': ['clang'],
 \   'cpp': ['clang'],
 \}
-let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -I src'
+let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude -Ilib/glad/include'
 let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
@@ -218,6 +219,15 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
+
+let g:airline#extensions#default#section_truncate_width = {
+  \ 'b': 79,
+  \ 'x': 60,
+  \ 'y': 88,
+  \ 'z': 75,
+  \ 'warning': 60,
+  \ 'error': 50,
+  \ }
 " }}}
 
 " TagBar {{{
@@ -241,6 +251,11 @@ Plug 'airblade/vim-gitgutter'
 
 " Easy Align {{{
 Plug 'junegunn/vim-easy-align'
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 " }}}
 
 " Easy Motion {{{
@@ -299,13 +314,11 @@ let b:beancount_root="./journal.beancount"
 
 " NCM {{{
 Plug 'roxma/nvim-completion-manager'
-" Plug 'roxma/ncm-clang'
+Plug 'roxma/ncm-clang'
 imap <expr> <CR>  (pumvisible() ?  "\<c-y>\<Plug>(expand_or_nl)" : "\<CR>")
 imap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-J>":"")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-Plug 'roxma/clang_complete'
-let g:clang_library_path='/usr/local/opt/llvm/lib'
 " }}}
 
 " Snippets {{{
