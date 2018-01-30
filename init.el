@@ -1,9 +1,9 @@
 ;;; package --- Summary
 ;; init.el
 
-;;; Commentory:
+;;; Commentary:
 
-;;; Code
+;;; Code:
 
 
 ;; Added by Package.el.  This must come before configurations of
