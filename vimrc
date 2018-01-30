@@ -94,6 +94,7 @@ endif
 
 " Mapping {{{
 let mapleader=","
+let maplocalleader=","
 
 " <F3> <F4> reserved for compile and run the program
 
@@ -196,7 +197,7 @@ let g:ale_linters = {
 \    'c': ['clang'],
 \   'cpp': ['clang'],
 \}
-let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude -Ilib/glad/include'
+let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude -Ilib/glad/include -Ilib/stb/include'
 let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
@@ -276,7 +277,7 @@ let g:vim_markdown_folding_disabled = 1
 Plug 'iamcco/mathjax-support-for-mkdp', { 'for': 'markdown'}
 Plug 'iamcco/markdown-preview.vim', { 'for': 'markdown' }
 let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
 " }}}
 
 " LimeLight {{{
@@ -315,6 +316,7 @@ let b:beancount_root="./journal.beancount"
 " NCM {{{
 Plug 'roxma/nvim-completion-manager'
 Plug 'roxma/ncm-clang'
+autocmd BufEnter *.cpp,*.h,*.hpp,*.hxx let g:ale_cpp_clang_options = join(ncm_clang#compilation_info()['args'], ' ')
 imap <expr> <CR>  (pumvisible() ?  "\<c-y>\<Plug>(expand_or_nl)" : "\<CR>")
 imap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-J>":"")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -330,6 +332,41 @@ let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsListSnippets = "<C-l>"
 let g:UltiSnipsRemoveSelectModeMappings = 0
+" }}}
+
+" GLSL {{{
+Plug 'tikhomirov/vim-glsl', { 'for': 'glsl' }
+" }}}
+
+" speed dating {{{
+Plug 'tpope/vim-speeddating'
+" }}}
+
+" org-mode {{{
+Plug 'jceb/vim-orgmode', { 'for': 'org' }
+let g:org_indent = 1
+let g:org_todo_keywords = [['TODO(t)', '|', 'DONE(d)'],
+    \ ['REPORT(r)', 'BUG(b)', 'KNOWNCAUSE(k)', '|', 'FIXED(f)'],
+    \ ['|', 'CANCELED(c)']]
+let g:org_agenda_files = ['~/org/*.org', '~/diary/*/*/*.org']
+let g:org_heading_highlight_colors = ['Special', 'PreProc', 'Constant',
+    \   'Identifier', 'Statement', 'Type', 'Title']
+" }}}
+
+" Universal Text Linking {{{
+Plug 'vim-scripts/utl.vim'
+let g:utl_cfg_hdl_scm_http_system = "silent !open '%u'"
+let g:utl_cfg_hdl_scm_http = g:utl_cfg_hdl_scm_http_system
+" }}}
+
+" Syntax Range {{{
+Plug 'vim-scripts/SyntaxRange'
+" }}}
+
+" Calendar {{{
+Plug 'mattn/calendar-vim'
+let g:calendar_filetype = 'org'
+let g:calendar_diary_extension = ".org"
 " }}}
 
 " Initialize plugin system
