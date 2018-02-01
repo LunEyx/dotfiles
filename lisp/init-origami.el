@@ -5,6 +5,8 @@
 
 ;;; Code:
 
+(require-packages 'origami)
+
 ;; Origami
 (require 'origami)
 (global-origami-mode t)
