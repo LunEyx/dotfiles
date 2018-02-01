@@ -14,6 +14,7 @@
 ;; Flycheck
 (require 'flycheck)
 (global-flycheck-mode t)
+(setq-default flycheck-emacs-lisp-load-path 'inherit)
 (setq-default flycheck-clang-args
     (list
         "-std=c++14"
