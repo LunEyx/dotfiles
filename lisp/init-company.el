@@ -18,6 +18,9 @@
 (setq company-idle-delay 0)
 (setq company-tooltip-idle-delay 0)
 (setq company-selection-wrap-around t)
+(setq completion-ignore-case t)
+(setq company-dabbrev-code-ignore-case t)
+(setq company-dabbrev-ignore-case t)
 
 ;; ------------------------------------------------
 ;; Function
@@ -65,6 +68,7 @@
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-irony))
 (setq irony-additional-clang-options nil)
+(setq company-irony-ignore-case t)
 
 ;; Company-yasnippet
 (with-eval-after-load 'company

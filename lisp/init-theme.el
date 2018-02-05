@@ -1,4 +1,4 @@
-;;; package --- Summary
+;;; init-theme.el --- Configurations for theme
 ;; init-theme.el
 
 ;;; Commentary:
@@ -15,8 +15,15 @@
 (load-theme 'zerodark t)
 (zerodark-setup-modeline-format) ;; optionally setup modeline
 
-;; Font Size
-(add-to-list 'default-frame-alist '(font . "DejaVuSansMono Nerd Font-18"))
+;; Font
+;; Setting English Font
+(set-face-attribute
+ 'default nil :font "DejaVuSansMono Nerd Font 18")
+;; Chinese Font 配制中文字体
+(dolist (charset '(kana han symbol cjk-misc bopomofo))
+  (set-fontset-font (frame-parameter nil 'font)
+                    charset
+                    (font-spec :family "WenQuanYi Micro Hei Mono" :size 21)))
 
 ;; ------------------------------------------------
 ;; Disable GUI Item

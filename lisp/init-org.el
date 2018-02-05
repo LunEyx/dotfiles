@@ -1,5 +1,4 @@
-;;; package --- Summary
-;; init-org.el
+;;; init-org.el --- configurations to the org-mode
 
 ;;; Commentary:
 
@@ -10,13 +9,23 @@
 ;; ------------------------------------------------
 
 (require 'org)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
 (setq org-enforce-todo-dependencies t)
 (setq org-hide-leading-stars t)
 (setq org-todo-keywords
-	  '((type "NOTE(n)" "|")
-		(sequence "TODO(t)" "|" "DONE(d!)")))
-(setq org-todo-keyword-faces
-	  '(("NOTE" . (:background "#4c3840" :foreground "Green" :weight bold))))
+	  '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d!)" "CANCELED(c@/!)")))
+(setq org-refile-targets
+      '((nil :maxlevel . 3) (org-agenda-files :maxlevel . 3) ("~/org/finished.org" :maxlevel . 3)))
+;; (setq org-todo-keyword-faces
+;; 	  '(("NOTE" . (:background "#4c3840" :foreground "Green" :weight bold))))
+(setq org-babel-load-languages '((emacs-lisp . t)
+                                 (c . t)
+                                 (c++ . t)
+                                 (ledger . t)
+                                 (python . t)
+                                 (ruby . t)))
+                                 
 
 ;; ------------------------------------------------
 ;; Adjust TODO and DONE
@@ -54,11 +63,36 @@
 ;; ------------------------------------------------
 (require 'org-agenda)
 (setq org-agenda-files
-			  (list "~/org/plan.org"
-					"~/org/book.org"
-					"~/org/gtd.org"
-					"~/org/school.org"
-					"~/org/luneyx-gtd/timetable.org"))
+      (list "~/org/inbox.org"
+            "~/org/task.org"
+            "~/org/note.org"
+            "~/org/trash.org"
+            "~/org/project.org"
+            "~/org/timetable.org"))
+
+;; ------------------------------------------------
+;; org-agenda-with-appt
+;; ------------------------------------------------
+(require 'appt)
+
+(defun luneyx-org-agenda-to-appt()
+  (interactive)
+  (appt-check)
+  (org-agenda-to-appt t))
+
+(run-at-time "12:05am" (* 24 3600) 'luneyx-org-agenda-to-appt)
+
+;; ------------------------------------------------
+;; org-capture
+;; ------------------------------------------------
+(require 'org-capture)
+
+(setq org-capture-templates
+      '(("n" "New" entry (file "~/org/inbox.org") "* %? %U\n  %i\n  %a\n" :empty-lines-after 1)
+        ("t" "Task" entry (file+headline "~/org/task.org" "Tasks") "** %?\n   %i\n   %a" :empty-lines-after 1)
+        ("i" "Idea" entry (file+headline "~/org/task.org" "Ideas") "** %?\n   %i\n   %a" :empty-lines-after 1)
+        ("N" "Note" entry (file "~/org/note.org") "* %?\n  %i\n  %a" :empty-lines-after 1)
+        ("p" "Project" entry (file "~/org/project.org") "** %?\n   %i\n   %a" :empty-lines-after 1)))
 
 (provide 'init-org)
 ;;; init-org.el ends here
