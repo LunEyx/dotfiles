@@ -27,6 +27,8 @@
 (require 'init-calendar)
 (require 'init-appt)
 (require 'init-org)
+(require 'beancount)
+(require 'init-ledger)
 (require 'init-filetype)
 (require 'init-buffer-manager)
 
@@ -48,7 +50,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (cnfonts calfw-org calfw-cal calfw zerodark-theme yasnippet helm-descbinds git-gutter-fringe flycheck-irony evil-surround evil-nerd-commenter evil-magit evil-leader evil-easymotion elscreen company-irony)))
+    (ledger-mode cnfonts calfw-org calfw-cal calfw zerodark-theme yasnippet helm-descbinds git-gutter-fringe flycheck-irony evil-surround evil-nerd-commenter evil-magit evil-leader evil-easymotion elscreen company-irony)))
  '(vc-annotate-background "#1B2229")
  '(vc-annotate-color-map
    (list

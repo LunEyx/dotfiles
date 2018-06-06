@@ -1,5 +1,4 @@
 ;;; init-theme.el --- Configurations for theme
-;; init-theme.el
 
 ;;; Commentary:
 
@@ -12,6 +11,7 @@
 ;; ------------------------------------------------
 
 ;; Color Theme
+(require 'zerodark-theme)
 (load-theme 'zerodark t)
 (zerodark-setup-modeline-format) ;; optionally setup modeline
 
@@ -23,7 +23,7 @@
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
   (set-fontset-font (frame-parameter nil 'font)
                     charset
-                    (font-spec :family "WenQuanYi Micro Hei Mono" :size 21)))
+                    (font-spec :family "WenQuanYi Micro Hei Mono" :size 22)))
 
 ;; ------------------------------------------------
 ;; Disable GUI Item

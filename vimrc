@@ -62,10 +62,11 @@ set clipboard=unnamed
 " }}}
 
 " GUI {{{
-colorscheme luna-term
+set background=light
+colorscheme PaperColor
 if has('win32') || has('win64')
     if has('gui_running')
-        colorscheme luna
+        colorscheme PaperColor
         " disable
         set guioptions-=T
         set guioptions-=m
@@ -75,11 +76,14 @@ if has('win32') || has('win64')
         " using internal tab instead of gui format
         set guioptions-=e
         set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,DejaVu\ Sans\ Mono:h14,Consolas:h15
-    elseif has('nvim')
-        colorscheme luna
+    " elseif has('nvim')
+        " colorscheme PaperColor
     endif
+" elseif has('gui_vimr')
+    " colorscheme PaperColor
 elseif has('gui_running')
     set guifont=DejaVu_Sans_Mono_Nerd_Font_Complete:h16
+else
 endif
 
 syntax on
@@ -90,6 +94,18 @@ if $TERM_PROGRAM =~ "iTerm"
     let &t_SR = "\<Esc>]50;CursorShape=2\x7" " Underline in replace mode
     let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
+
+function! LightTheme()
+    set background=light
+    colorscheme PaperColor
+    AirlineTheme papercolor
+endfunction
+
+function! DarkTheme()
+    set background=dark
+    colorscheme luna
+    AirlineTheme luna
+endfunction
 " }}}
 
 " Mapping {{{
@@ -147,6 +163,9 @@ nmap <Leader>tc :tabclose<cr>
 nmap <Leader>th :tabp<cr>
 nmap <Leader>tl :tabn<cr>
 
+nmap <Leader>bh :bp<cr>
+nmap <Leader>bl :bn<cr>
+
 nmap <Leader>sh :split<cr>
 nmap <Leader>sv :vsplit<cr>
 nmap <Leader>sa <C-w><
@@ -194,10 +213,13 @@ Plug 'w0rp/ale'
 " Write this in your vimrc file
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters = {
-\    'c': ['clang'],
-\   'cpp': ['clang'],
-\}
-let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude -Ilib/glad/include -Ilib/stb/include'
+            \   'c': ['clang'],
+            \   'cpp': ['clang'],
+            \   'beancount': [],
+            \   'tex': [],
+            \}
+let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
+let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
 let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
@@ -209,7 +231,7 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='luna'
+let g:airline_theme='papercolor'
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -298,11 +320,6 @@ let g:asyncrun_bell = 1
 Plug 'wesQ3/vim-windowswap'
 " }}}
 
-" ctrlP {{{
-" Plug 'kien/ctrlp.vim'
-" let g:ctrlp_map = '<leader>f'
-" }}}
-
 " FZF {{{
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -310,13 +327,13 @@ Plug 'junegunn/fzf.vim'
 
 " vim-beancount {{{
 Plug 'nathangrigg/vim-beancount'
-let b:beancount_root="./journal.beancount"
+let b:beancount_root="~/Beancount/journal.beancount"
 " }}}
 
 " NCM {{{
 Plug 'roxma/nvim-completion-manager'
 Plug 'roxma/ncm-clang'
-autocmd BufEnter *.cpp,*.h,*.hpp,*.hxx let g:ale_cpp_clang_options = join(ncm_clang#compilation_info()['args'], ' ')
+autocmd BufEnter *.cpp,*.h,*.hpp,*.hxx let g:ale_cpp_clang_options = join(split(g:ale_cpp_clang_options_origin) + ncm_clang#compilation_info()['args'], ' ')
 imap <expr> <CR>  (pumvisible() ?  "\<c-y>\<Plug>(expand_or_nl)" : "\<CR>")
 imap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-J>":"")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -342,17 +359,6 @@ Plug 'tikhomirov/vim-glsl', { 'for': 'glsl' }
 Plug 'tpope/vim-speeddating'
 " }}}
 
-" org-mode {{{
-Plug 'jceb/vim-orgmode', { 'for': 'org' }
-let g:org_indent = 1
-let g:org_todo_keywords = [['TODO(t)', '|', 'DONE(d)'],
-    \ ['REPORT(r)', 'BUG(b)', 'KNOWNCAUSE(k)', '|', 'FIXED(f)'],
-    \ ['|', 'CANCELED(c)']]
-let g:org_agenda_files = ['~/org/*.org', '~/diary/*/*/*.org']
-let g:org_heading_highlight_colors = ['Special', 'PreProc', 'Constant',
-    \   'Identifier', 'Statement', 'Type', 'Title']
-" }}}
-
 " Universal Text Linking {{{
 Plug 'vim-scripts/utl.vim'
 let g:utl_cfg_hdl_scm_http_system = "silent !open '%u'"
@@ -367,6 +373,20 @@ Plug 'vim-scripts/SyntaxRange'
 Plug 'mattn/calendar-vim'
 let g:calendar_filetype = 'org'
 let g:calendar_diary_extension = ".org"
+" }}}
+
+" Latex live preview {{{
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+let g:livepreview_previewer = 'open -a Skim'
+let g:livepreview_engine = 'xelatex' . ' '
+" }}}
+
+" Todo.txt {{{
+Plug 'freitass/todo.txt-vim'
+" }}}
+
+" MIPS Syntax Highlight {{{
+Plug 'harenome/vim-mipssyntax'
 " }}}
 
 " Initialize plugin system
@@ -421,16 +441,17 @@ augroup END
 " .py {{{
 augroup ft_py
     autocmd!
-    autocmd Filetype py nnoremap <F3> :AsyncRun python %<cr>
-    autocmd Filetype py nnoremap <F4> :AsyncRun python %<cr>
+    autocmd Filetype python nnoremap <F3> :AsyncRun python %<cr>
+    autocmd Filetype python nnoremap <F4> :AsyncRun python %<cr>
 augroup END
 " }}}
 
 " .rb {{{
 augroup ft_rb
     autocmd!
-    autocmd Filetype rb nnoremap <F3> :AsyncRun ruby %<cr>
-    autocmd Filetype rb nnoremap <F4> :!ruby %<cr>
+    autocmd Filetype ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
+    autocmd Filetype ruby nnoremap <F3> :AsyncRun ruby %<cr>
+    autocmd Filetype ruby nnoremap <F4> :!ruby %<cr>
 augroup END
 " }}}
 
@@ -445,10 +466,15 @@ augroup END
 " .bean/.beancount {{{
 augroup ft_beancount
     autocmd!
-    autocmd Filetype beancount setlocal foldenable!
+    autocmd Filetype beancount nnoremap <Leader><Leader>a :AlignCommodity<cr>
+    autocmd Filetype beancount vnoremap <Leader><Leader>a :'<,'>AlignCommodity<cr>
     autocmd Filetype beancount nnoremap <F3> :!bean-check journal.beancount<cr>
     autocmd Filetype beancount nnoremap <F4> :AsyncRun bean-web %<cr>
 augroup END
+" }}}
+
+" .tex {{{
+let g:tex_flavor = "latex"
 " }}}
 
 " }}}

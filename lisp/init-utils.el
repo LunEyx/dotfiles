@@ -11,8 +11,11 @@
 ;; Put all backup files to .saves
 ;; (setq backup-directory-alist `(("." . "~/.saves")))
 
-;; Don't backup
-(setq make-backup-files nil)
+;; Place all backup and auto-save files to temp
+(setq backup-directory-alist
+          `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
 
 ;; Show matching parenthesis
 (show-paren-mode t)

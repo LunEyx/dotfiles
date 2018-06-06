@@ -22,14 +22,15 @@
  (lambda()
    "Open a calfw calendar view."
    (interactive)
-    (cfw:open-calendar-buffer
-     :custom-map
-     cfw:org-schedule-map
-     :contents-sources
-     (list
-      (cfw:org-create-source) ; orgmode source
-      (cfw:cal-create-source) ; diary source
-      ))))
+   (let ((org-agenda-files (remove "~/org/timetable.org" org-agenda-files)))
+     (cfw:open-calendar-buffer
+      :custom-map
+      cfw:org-schedule-map
+      :contents-sources
+      (list
+       (cfw:org-create-source) ; orgmode source
+       (cfw:cal-create-source) ; diary source
+       )))))
 
 (require 'solar)
 (setq calendar-latitude 22.28552)
@@ -40,6 +41,8 @@
 (add-hook 'calendar-today-visible-hook 'calendar-mark-today)
 (setq calendar-mark-diary-entries-flag t)
 (setq calendar-mark-holidays-flag t)
+;; Use European style date
+(setq calendar-date-style 'european)
 
 (require 'holidays)
 (setq holiday-other-holidays

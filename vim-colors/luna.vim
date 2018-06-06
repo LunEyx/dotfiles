@@ -85,7 +85,6 @@ hi Title         guifg=#c9f0fa guibg=NONE    gui=NONE
 " ---------------------------------------------------------------------
 hi Comment       guifg=#616161 guibg=NONE    gui=NONE
 " ---------------------------------------------------------------------
-" hi Constant      guifg=#e3588d guibg=NONE    gui=NONE
 hi Constant      guifg=#fff159 guibg=NONE    gui=NONE
 hi String        guifg=#60bdf4 guibg=NONE    gui=NONE
 hi Character     guifg=#ff8da1 guibg=NONE    gui=NONE
@@ -93,37 +92,18 @@ hi Number        guifg=#fff159 guibg=NONE    gui=NONE
 hi Boolean       guifg=#fff159 guibg=NONE    gui=NONE
 hi Float         guifg=#fff159 guibg=NONE    gui=NONE
 " ---------------------------------------------------------------------
-"hi Identifier    guifg=#40ffff guibg=NONE    gui=NONE
 hi Identifier    guifg=#00bcbc guibg=NONE    gui=NONE
 hi Function      guifg=#00bcbc guibg=NONE    gui=NONE
 " ---------------------------------------------------------------------
-"hi Statement     guifg=#ff8036 guibg=NONE    gui=NONE
-"hi Statement     guifg=#ee82ee guibg=NONE    gui=NONE
-"hi Statement     guifg=#f26d99 guibg=NONE    gui=NONE
-"hi Statement     guifg=#b06bfc guibg=NONE    gui=NONE
-"hi Statement     guifg=#f88379 guibg=NONE    gui=NONE
 hi Statement     guifg=#f64a8a guibg=NONE    gui=NONE
-"hi Conditional   guifg=#c72723 guibg=NONE    gui=NONE
 hi Conditional   guifg=#e4d00a guibg=NONE    gui=NONE
-" hi Repeat       guifg= guibg=NONE    gui=NONE
-" hi Label       guifg= guibg=NONE    gui=NONE
 hi Operator      guifg=#ff8036 guibg=NONE    gui=NONE
-" hi Keyword       guifg= guibg=NONE    gui=NONE
 hi Exception     guifg=#e4d00a guibg=NONE    gui=NONE
 " ---------------------------------------------------------------------
 hi PreProc       guifg=#bada55 guibg=NONE    gui=NONE
-" hi Include       guifg= guibg=NONE    gui=NONE
-"hi Define        guifg=#bada55 guibg=NONE    gui=NONE
-" hi Macro        guifg=#bada55 guibg=NONE    gui=NONE
-" hi PreCondit        guifg=#bada55 guibg=NONE    gui=NONE
 " ---------------------------------------------------------------------
-"hi Type          guifg=#26ffa1 guibg=NONE    gui=NONE
-"hi Type          guifg=#ff3800 guibg=NONE    gui=NONE
 hi Type          guifg=#ff4040 guibg=NONE    gui=NONE
-"hi StorageClass  guifg=#f4bbff guibg=NONE    gui=NONE
 hi StorageClass  guifg=#da8a67 guibg=NONE    gui=NONE
-" hi Structure  guifg= guibg=NONE    gui=NONE
-" hi Typedef  guifg= guibg=NONE    gui=NONE
 " ---------------------------------------------------------------------
 hi Special       guifg=#ff8da1 guibg=NONE    gui=NONE
 " hi SpecialChar       guifg=#ff8da1 guibg=NONE    gui=NONE

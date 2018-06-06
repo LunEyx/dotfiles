@@ -10,7 +10,7 @@ export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="bullet-train"
 
 BULLETTRAIN_CONTEXT_DEFAULT_USER="luneyx"
-BULLETTRAIN_CONTEXT_DEFAULT_USERNAME="LunEyx"
+BULLETTRAIN_CONTEXT_DEFAULT_USERNAME="LunEyx(>﹏<)"
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -89,9 +89,13 @@ alias vim=nvim
 alias vimf='nvim $(fzf)'
 alias cds='cd "$(find ~ -type d | fzf --preview='"'"'ls {}'"'"')"'
 export FZF_DEFAULT_OPTS=' --height 40%'
+alias todo='todo.sh'
+alias ri='noglob ri'
 
 # Add LLVM to PATH
 export PATH="$PATH:/usr/local/opt/llvm/bin"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+export PATH="/usr/local/Cellar/todo-txt/2.10/bin:$PATH"
