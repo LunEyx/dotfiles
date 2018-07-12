@@ -7,10 +7,10 @@
 
 " not compatible to vi
 set nocompatible
-" show coordinate of cursor
-set ruler
-" show line number on the left
-set number
+" not show coordinate of cursor
+set noruler
+" show relative line number on the left
+set relativenumber
 " smartly ignore case when search
 set ignorecase
 set smartcase
@@ -20,11 +20,11 @@ set hlsearch
 set incsearch
 " base on language indent
 set cindent
-" turn tab to 4 space
+" turn tab to 2 space
 set expandtab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 " confirm when executing function should not done
 set confirm
 " backspace can delete indent and 'next line'
@@ -165,6 +165,7 @@ nmap <Leader>tl :tabn<cr>
 
 nmap <Leader>bh :bp<cr>
 nmap <Leader>bl :bn<cr>
+nmap <Leader>bb :Buffers<cr>
 
 nmap <Leader>sh :split<cr>
 nmap <Leader>sv :vsplit<cr>
@@ -256,16 +257,16 @@ let g:airline#extensions#default#section_truncate_width = {
 " TagBar {{{
 Plug 'majutsushi/tagbar'
 " for ruby, delete if you do not need
-let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-\ }
+" let g:tagbar_type_ruby = {
+    " \ 'kinds' : [
+        " \ 'm:modules',
+        " \ 'c:classes',
+        " \ 'd:describes',
+        " \ 'C:contexts',
+        " \ 'f:methods',
+        " \ 'F:singleton methods'
+    " \ ]
+" \ }
 " }}}
 
 " GitGutter {{{
@@ -331,13 +332,20 @@ let b:beancount_root="~/Beancount/journal.beancount"
 " }}}
 
 " NCM {{{
-Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/ncm-clang'
-autocmd BufEnter *.cpp,*.h,*.hpp,*.hxx let g:ale_cpp_clang_options = join(split(g:ale_cpp_clang_options_origin) + ncm_clang#compilation_info()['args'], ' ')
-imap <expr> <CR>  (pumvisible() ?  "\<c-y>\<Plug>(expand_or_nl)" : "\<CR>")
-imap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-J>":"")
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+
+auto BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+" set shortmess+=c
+inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+Plug 'ncm2/ncm2-abbrfuzzy'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-ultisnips'
 " }}}
 
 " Snippets {{{
@@ -389,6 +397,26 @@ Plug 'freitass/todo.txt-vim'
 Plug 'harenome/vim-mipssyntax'
 " }}}
 
+" Emmet {{{
+Plug 'mattn/emmet-vim'
+" }}}
+
+" vim-haml {{{
+Plug 'tpope/vim-haml'
+" }}}
+
+" vim-rails {{{
+Plug 'tpope/vim-rails'
+" }}}
+
+" vim-todo-list {{{
+Plug 'aserebryakov/vim-todo-lists'
+" }}}
+
+" vim-ruby {{{
+Plug 'vim-ruby/vim-ruby'
+" }}}
+
 " Initialize plugin system
 call plug#end()
 " }}}
@@ -430,6 +458,15 @@ augroup ft_cpp
 augroup END
 " }}}
 
+" .html {{{
+augroup ft_html
+    autocmd!
+    autocmd Filetype html setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
+    autocmd Filetype html nnoremap <F3> :AsyncRun open %<cr>
+    autocmd Filetype html nnoremap <F4> :!open %<cr>
+augroup END
+" }}}
+
 " .java {{{
 augroup ft_java
     autocmd!
@@ -452,6 +489,13 @@ augroup ft_rb
     autocmd Filetype ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
     autocmd Filetype ruby nnoremap <F3> :AsyncRun ruby %<cr>
     autocmd Filetype ruby nnoremap <F4> :!ruby %<cr>
+augroup END
+" }}}
+
+" .erb {{{
+augroup ft_erb
+    autocmd!
+    autocmd Filetype eruby setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
 augroup END
 " }}}
 

@@ -53,7 +53,7 @@ BULLETTRAIN_CONTEXT_DEFAULT_USERNAME="LunEyx(>﹏<)"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-completions)
+plugins=(gem taskwarrior catimg git zsh-completions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,3 +99,5 @@ export PATH="$PATH:$HOME/.rvm/bin"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
 export PATH="/usr/local/Cellar/todo-txt/2.10/bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+source $(brew --prefix nvm)/nvm.sh
