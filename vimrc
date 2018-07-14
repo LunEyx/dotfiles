@@ -59,6 +59,8 @@ set splitbelow
 set splitright
 " system clipboard synconize with vim
 set clipboard=unnamed
+" show partial off-screen results in a preview window
+set inccommand=split
 " }}}
 
 " GUI {{{
@@ -417,6 +419,10 @@ Plug 'aserebryakov/vim-todo-lists'
 Plug 'vim-ruby/vim-ruby'
 " }}}
 
+" vimagit {{{
+Plug 'jreybert/vimagit'
+" }}}
+
 " Initialize plugin system
 call plug#end()
 " }}}
@@ -489,6 +495,8 @@ augroup ft_rb
     autocmd Filetype ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
     autocmd Filetype ruby nnoremap <F3> :AsyncRun ruby %<cr>
     autocmd Filetype ruby nnoremap <F4> :!ruby %<cr>
+    autocmd Filetype ruby vnoremap <F4> :!ruby<cr>
+    autocmd Filetype ruby vnoremap ,r :!ruby<cr>
 augroup END
 " }}}
 
