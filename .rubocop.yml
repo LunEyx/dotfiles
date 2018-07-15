@@ -46,3 +46,7 @@ Style/FrozenStringLiteralComment:
     - 'Gemfile'
     - 'Rakefile'
 
+Style/HashSyntax:
+  Exclude:
+    - 'Rakefile'
+
