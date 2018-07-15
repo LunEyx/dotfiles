@@ -193,42 +193,7 @@ call plug#begin('~/.vim/plugged')
 
 " Make sure you use single quotes
 
-" Fugitive {{{
-Plug 'tpope/vim-fugitive'
-" }}}
-
-" Nerdtree {{{
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin'
-" autocmd vimenter * NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '~'
-" }}}
-
-" NERD Commenter {{{
-Plug 'scrooloose/nerdcommenter'
-let g:NERDSpaceDelims=1
-" }}}
-
-" ALE {{{
-Plug 'w0rp/ale'
-" Write this in your vimrc file
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_linters = {
-            \   'c': ['clang'],
-            \   'cpp': ['clang'],
-            \   'beancount': [],
-            \   'tex': [],
-            \}
-let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
-let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
-let g:ale_c_clang_options = '-Wall -Wextra -I src'
-" }}}
-
-" Surround {{{
-Plug 'tpope/vim-surround'
-" }}}
+" Appearance {{{
 
 " Airline {{{
 Plug 'vim-airline/vim-airline'
@@ -256,84 +221,26 @@ let g:airline#extensions#default#section_truncate_width = {
   \ }
 " }}}
 
-" TagBar {{{
-Plug 'majutsushi/tagbar'
-" for ruby, delete if you do not need
-" let g:tagbar_type_ruby = {
-    " \ 'kinds' : [
-        " \ 'm:modules',
-        " \ 'c:classes',
-        " \ 'd:describes',
-        " \ 'C:contexts',
-        " \ 'f:methods',
-        " \ 'F:singleton methods'
-    " \ ]
-" \ }
 " }}}
 
-" GitGutter {{{
-Plug 'airblade/vim-gitgutter'
+" Completion {{{
+
+" ALE {{{
+Plug 'w0rp/ale'
+" Write this in your vimrc file
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_linters = {
+            \   'c': ['clang'],
+            \   'cpp': ['clang'],
+            \   'beancount': [],
+            \   'tex': [],
+            \}
+let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
+let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
+let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
-" Easy Align {{{
-Plug 'junegunn/vim-easy-align'
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-" }}}
-
-" Easy Motion {{{
-Plug 'easymotion/vim-easymotion'
-" }}}
-
-" Swift {{{
-Plug 'bumaociyuan/vim-swift', { 'for': 'swift' }
-let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
-" }}}
-
-" Markdown {{{
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-let g:vim_markdown_folding_disabled = 1
-" }}}
-
-" Markdown Preview with mathjax support {{{
-Plug 'iamcco/mathjax-support-for-mkdp', { 'for': 'markdown'}
-Plug 'iamcco/markdown-preview.vim', { 'for': 'markdown' }
-let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
-let g:mkdp_auto_start = 0
-" }}}
-
-" LimeLight {{{
-Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
-let g:limelight_conceal_ctermfg = 242
-" }}}
-
-" GoYo {{{
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-" }}}
-
-" Asyncrun {{{
-Plug 'skywind3000/asyncrun.vim'
-let g:asyncrun_bell = 1
-" }}}
-
-" WindowSwap {{{
-Plug 'wesQ3/vim-windowswap'
-" }}}
-
-" FZF {{{
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-" }}}
-
-" vim-beancount {{{
-Plug 'nathangrigg/vim-beancount'
-let b:beancount_root="~/Beancount/journal.beancount"
-" }}}
-
-" NCM {{{
+" NCM2 {{{
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 
@@ -361,11 +268,76 @@ let g:UltiSnipsListSnippets = "<C-l>"
 let g:UltiSnipsRemoveSelectModeMappings = 0
 " }}}
 
-" GLSL {{{
-Plug 'tikhomirov/vim-glsl', { 'for': 'glsl' }
 " }}}
 
-" speed dating {{{
+" Editor Level Support {{{
+
+" Nerdtree {{{
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+" autocmd vimenter * NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '~'
+" }}}
+
+" NERD Commenter {{{
+Plug 'scrooloose/nerdcommenter'
+let g:NERDSpaceDelims=1
+" }}}
+
+" Surround {{{
+Plug 'tpope/vim-surround'
+" }}}
+
+" TagBar {{{
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+" }}}
+
+" Easy Align {{{
+Plug 'junegunn/vim-easy-align'
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+" }}}
+
+" Easy Motion {{{
+Plug 'easymotion/vim-easymotion'
+" }}}
+
+" Markdown Preview with mathjax support {{{
+Plug 'iamcco/mathjax-support-for-mkdp', { 'for': 'markdown'}
+Plug 'iamcco/markdown-preview.vim', { 'for': 'markdown' }
+let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
+let g:mkdp_auto_start = 0
+" }}}
+
+" LimeLight {{{
+Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
+let g:limelight_conceal_ctermfg = 242
+" }}}
+
+" GoYo {{{
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+" }}}
+
+" Asyncrun {{{
+Plug 'skywind3000/asyncrun.vim', { 'on': 'AsyncRun' }
+let g:asyncrun_bell = 1
+" }}}
+
+" WindowSwap {{{
+Plug 'wesQ3/vim-windowswap'
+" }}}
+
+" FZF {{{
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" }}}
+
+" Speed Dating {{{
 Plug 'tpope/vim-speeddating'
 " }}}
 
@@ -379,11 +351,63 @@ let g:utl_cfg_hdl_scm_http = g:utl_cfg_hdl_scm_http_system
 Plug 'vim-scripts/SyntaxRange'
 " }}}
 
-" Calendar {{{
-Plug 'mattn/calendar-vim'
-let g:calendar_filetype = 'org'
-let g:calendar_diary_extension = ".org"
 " }}}
+
+" Git {{{
+
+" Fugitive {{{
+Plug 'tpope/vim-fugitive'
+" }}}
+
+" GitGutter {{{
+Plug 'airblade/vim-gitgutter'
+" }}}
+
+" vimagit {{{
+Plug 'jreybert/vimagit'
+" }}}
+
+" }}}
+
+" Language {{{
+
+" Swift {{{
+Plug 'bumaociyuan/vim-swift', { 'for': 'swift' }
+" }}}
+
+" Markdown {{{
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+let g:vim_markdown_folding_disabled = 1
+" }}}
+
+" Beancount {{{
+Plug 'nathangrigg/vim-beancount', { 'for': 'beancount' }
+let b:beancount_root="~/Beancount/journal.beancount"
+" }}}
+
+" GLSL {{{
+Plug 'tikhomirov/vim-glsl', { 'for': 'glsl' }
+" }}}
+
+" MIPS {{{
+Plug 'harenome/vim-mipssyntax', { 'for': 'mips' }
+" }}}
+
+" Haml {{{
+Plug 'tpope/vim-haml', { 'for': 'haml' }
+" }}}
+
+" Rails {{{
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+" }}}
+
+" Ruby {{{
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+" }}}
+
+" }}}
+
+" Language Level Support {{{
 
 " Latex live preview {{{
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
@@ -391,36 +415,10 @@ let g:livepreview_previewer = 'open -a Skim'
 let g:livepreview_engine = 'xelatex' . ' '
 " }}}
 
-" Todo.txt {{{
-Plug 'freitass/todo.txt-vim'
-" }}}
-
-" MIPS Syntax Highlight {{{
-Plug 'harenome/vim-mipssyntax'
-" }}}
-
 " Emmet {{{
-Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim', { 'for': 'html' }
 " }}}
 
-" vim-haml {{{
-Plug 'tpope/vim-haml'
-" }}}
-
-" vim-rails {{{
-Plug 'tpope/vim-rails'
-" }}}
-
-" vim-todo-list {{{
-Plug 'aserebryakov/vim-todo-lists'
-" }}}
-
-" vim-ruby {{{
-Plug 'vim-ruby/vim-ruby'
-" }}}
-
-" vimagit {{{
-Plug 'jreybert/vimagit'
 " }}}
 
 " Initialize plugin system
@@ -537,7 +535,7 @@ if has("nvim")
     tmap <C-k> <C-\><C-n><C-k>
     tmap <C-h> <C-\><C-n><C-h>
     tmap <C-l> <C-\><C-n><C-l>
-    let g:python_host_prog="/usr/bin/python"
+    let g:python_host_prog="/usr/local/bin/python"
     let g:python3_host_prog="/usr/local/bin/python3"
 endif
 " }}}
