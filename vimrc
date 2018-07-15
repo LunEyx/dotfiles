@@ -419,6 +419,12 @@ let g:livepreview_engine = 'xelatex' . ' '
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 " }}}
 
+" Ruby-Eval {{{
+Plug 'kmdsbng/vim-ruby-eval', { 'for': 'ruby' }
+noremap ,er :RubyEval<CR>
+noremap ,em $a # =><ESC>:RubyEval<CR>
+" }}}
+
 " }}}
 
 " Initialize plugin system
