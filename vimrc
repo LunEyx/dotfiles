@@ -9,6 +9,8 @@
 set nocompatible
 " not show coordinate of cursor
 set noruler
+" show absolute line number on current line
+set number
 " show relative line number on the left
 set relativenumber
 " smartly ignore case when search
@@ -59,13 +61,15 @@ set splitbelow
 set splitright
 " system clipboard synconize with vim
 set clipboard=unnamed
+if has('nvim')
 " show partial off-screen results in a preview window
 set inccommand=split
+endif
 " }}}
 
 " GUI {{{
-set background=light
-colorscheme PaperColor
+set termguicolors
+colorscheme base16-material
 if has('win32') || has('win64')
     if has('gui_running')
         colorscheme PaperColor
@@ -78,14 +82,9 @@ if has('win32') || has('win64')
         " using internal tab instead of gui format
         set guioptions-=e
         set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14,DejaVu\ Sans\ Mono:h14,Consolas:h15
-    " elseif has('nvim')
-        " colorscheme PaperColor
     endif
-" elseif has('gui_vimr')
-    " colorscheme PaperColor
 elseif has('gui_running')
     set guifont=DejaVu_Sans_Mono_Nerd_Font_Complete:h16
-else
 endif
 
 syntax on
@@ -108,6 +107,21 @@ function! DarkTheme()
     colorscheme luna
     AirlineTheme luna
 endfunction
+
+function! Transparent()
+    hi Normal guibg=NONE ctermbg=NONE
+    hi Comment guifg=#849EAA
+endfunction
+
+nmap <C-S-P> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+call Transparent()
 " }}}
 
 " Mapping {{{
@@ -124,6 +138,8 @@ nmap <F7> :AsyncRun<space>
 nmap <F8> :NERDTreeToggle<cr>
 nmap <F9> :TagbarToggle<cr>
 nmap <F10> :call asyncrun#quickfix_toggle(10)<CR>
+nmap ]l :lnext<CR>
+nmap [l :lprevious<CR>
 
 function! GetBufferList()
   redir =>buflist
@@ -240,6 +256,7 @@ let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -I
 let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
+if has("nvim")
 " NCM2 {{{
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
@@ -251,11 +268,11 @@ inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-Plug 'ncm2/ncm2-abbrfuzzy'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-ultisnips'
 " }}}
+endif
 
 " Snippets {{{
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -351,6 +368,39 @@ let g:utl_cfg_hdl_scm_http = g:utl_cfg_hdl_scm_http_system
 Plug 'vim-scripts/SyntaxRange'
 " }}}
 
+" Translate-Shell {{{
+Plug 'echuraev/translate-shell.vim'
+let g:trans_bin = "/usr/local/bin"
+let g:trans_win_height = 3
+let g:trans_default_direction = ':zh-TW'
+let g:trans_directions_list = [
+    \['en', 'zh-TW'],
+    \['ja', 'zh-TW'],
+    \['zh-TW', 'en'],
+    \['zh-CN', 'zh-TW']
+\]
+nnoremap <silent> <C-\> :Trans -b<CR>
+vnoremap <silent> <C-\> :TransVisual -b<CR>
+
+" Plug 'VincentCordobes/vim-translate'
+" let g:translate#default_languages = {
+      " \ 'en': 'zh-TW',
+      " \ 'zh-TW': 'en',
+      " \ 'zh-CN': 'en',
+      " \ 'ja': 'zh-TW'
+      " \ }
+" nnoremap <silent> <C-\> viw:TranslateVisual<CR>
+" vnoremap <silent> <C-\> :TranslateVisual<CR>
+" }}}
+
+" RSpec {{{
+Plug 'thoughtbot/vim-rspec'
+noremap <leader>sc :call RunCurrentSpecFile()<cr>
+noremap <leader>sn :call RunNearestSpec()<cr>
+noremap <leader>sl :call RunLastSpec()<cr>
+noremap <leader>s<space> :call RunAllSpecs()<cr>
+" }}}
+
 " }}}
 
 " Git {{{
@@ -405,6 +455,11 @@ Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 " }}}
 
+" Javascript {{{
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+" }}}
+
 " }}}
 
 " Language Level Support {{{
@@ -416,13 +471,16 @@ let g:livepreview_engine = 'xelatex' . ' '
 " }}}
 
 " Emmet {{{
-Plug 'mattn/emmet-vim', { 'for': 'html' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'javascript', 'javascript.jsx'] }
+let g:user_emmet_settings = {
+      \ 'javascript.jsx' : {
+      \   'extends' : 'jsx',
+      \   },
+      \ }
 " }}}
 
 " Ruby-Eval {{{
 Plug 'kmdsbng/vim-ruby-eval', { 'for': 'ruby' }
-noremap ,er :RubyEval<CR>
-noremap ,em $a # =><ESC>:RubyEval<CR>
 " }}}
 
 " }}}
@@ -431,108 +489,8 @@ noremap ,em $a # =><ESC>:RubyEval<CR>
 call plug#end()
 " }}}
 
-" Filetype {{{
-
-" .vim {{{
-augroup ft_vim
-    autocmd!
-    autocmd Filetype vim setlocal foldmethod=marker
-    autocmd Filetype vim setlocal foldenable
-augroup END
-" }}}
-
-" .c {{{
-augroup ft_c
-    autocmd!
-    if has('win32') || has('win64')
-        autocmd Filetype c nnoremap <F3> :AsyncRun clang -o %<.exe %<cr>
-        autocmd Filetype c nnoremap <F4> :!%:r<cr>
-    else
-        autocmd Filetype c nnoremap <F3> :AsyncRun clang -o %< %<cr>
-        autocmd Filetype c nnoremap <F4> :!./%:r<cr>
-    endif
-augroup END
-" }}}
-
-" .cpp {{{
-augroup ft_cpp
-    autocmd!
-    if has('win32') || has('win64')
-        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -std=c++14 -o %<.exe %<cr>
-        autocmd Filetype cpp nnoremap <F4> :AsyncRun %<<cr>
-    else
-        autocmd Filetype cpp nnoremap <F3> :AsyncRun clang++ -Wall -Wextra -std=c++14 -o %< %<cr>
-        autocmd Filetype cpp nnoremap <F15> :AsyncRun clang++ -Wall -Wextra -Werror -std=c++14 -o %< %<cr>
-        autocmd Filetype cpp nnoremap <F4> :AsyncRun ./%:r<cr>
-    endif
-augroup END
-" }}}
-
-" .html {{{
-augroup ft_html
-    autocmd!
-    autocmd Filetype html setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
-    autocmd Filetype html nnoremap <F3> :AsyncRun open %<cr>
-    autocmd Filetype html nnoremap <F4> :!open %<cr>
-augroup END
-" }}}
-
-" .java {{{
-augroup ft_java
-    autocmd!
-    autocmd Filetype java nnoremap <F3> :AsyncRun javac %<cr>
-    autocmd Filetype java nnoremap <F4> :AsyncRun java %< <cr>
-augroup END
-" }}}
-
-" .py {{{
-augroup ft_py
-    autocmd!
-    autocmd Filetype python nnoremap <F3> :AsyncRun python %<cr>
-    autocmd Filetype python nnoremap <F4> :AsyncRun python %<cr>
-augroup END
-" }}}
-
-" .rb {{{
-augroup ft_rb
-    autocmd!
-    autocmd Filetype ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
-    autocmd Filetype ruby nnoremap <F3> :AsyncRun ruby %<cr>
-    autocmd Filetype ruby nnoremap <F4> :!ruby %<cr>
-    autocmd Filetype ruby vnoremap <F4> :!ruby<cr>
-    autocmd Filetype ruby vnoremap ,r :!ruby<cr>
-augroup END
-" }}}
-
-" .erb {{{
-augroup ft_erb
-    autocmd!
-    autocmd Filetype eruby setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
-augroup END
-" }}}
-
-" .swift {{{
-augroup ft_swift
-    autocmd!
-    autocmd Filetype swift nnoremap <F3> :AsyncRun swiftc %<cr>
-    autocmd Filetype swift nnoremap <F4> :!swift %<cr>
-augroup END
-" }}}
-
-" .bean/.beancount {{{
-augroup ft_beancount
-    autocmd!
-    autocmd Filetype beancount nnoremap <Leader><Leader>a :AlignCommodity<cr>
-    autocmd Filetype beancount vnoremap <Leader><Leader>a :'<,'>AlignCommodity<cr>
-    autocmd Filetype beancount nnoremap <F3> :!bean-check journal.beancount<cr>
-    autocmd Filetype beancount nnoremap <F4> :AsyncRun bean-web %<cr>
-augroup END
-" }}}
-
 " .tex {{{
 let g:tex_flavor = "latex"
-" }}}
-
 " }}}
 
 " neovim {{{
@@ -541,7 +499,7 @@ if has("nvim")
     tmap <C-k> <C-\><C-n><C-k>
     tmap <C-h> <C-\><C-n><C-h>
     tmap <C-l> <C-\><C-n><C-l>
-    let g:python_host_prog="/usr/local/bin/python"
     let g:python3_host_prog="/usr/local/bin/python3"
 endif
 " }}}
+

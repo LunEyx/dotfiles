@@ -86,18 +86,30 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vim=nvim
+alias vimt='nvim "+colorscheme dracula"'
 alias vimf='nvim $(fzf)'
 alias cds='cd "$(find ~ -type d | fzf --preview='"'"'ls {}'"'"')"'
 export FZF_DEFAULT_OPTS=' --height 40%'
 alias todo='todo.sh'
 alias ri='noglob ri'
+alias note='nvim ~/Note/'
 
+# Add HOME/bin to PATH
+export PATH="$HOME/bin:$PATH"
 # Add LLVM to PATH
 export PATH="$PATH:/usr/local/opt/llvm/bin"
+# Add FZF to PATH
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Add JAVA to PATH
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH="$JAVA_HOME/bin:$PATH"
+# Add sqlite to PATH
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+# Add todo-txt to PATH
+export PATH="/usr/local/Cellar/todo-txt/2.10/bin:$PATH"
+# Add NVM to PATH
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export PATH="/usr/local/opt/sqlite/bin:$PATH"
-export PATH="/usr/local/Cellar/todo-txt/2.10/bin:$PATH"
-export NVM_DIR="$HOME/.nvm"
-source $(brew --prefix nvm)/nvm.sh

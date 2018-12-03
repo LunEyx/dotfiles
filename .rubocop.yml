@@ -11,8 +11,23 @@ AllCops:
     - '.git/**/*'
     - '**/spec_helper.rb'
 
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Layout/TrailingBlankLines:
   EnforcedStyle: final_blank_line
+
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: false
+
+Lint/Debugger:
+  Enabled: false
+
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false
 
 Metrics/AbcSize:
   Max: 20
@@ -21,7 +36,7 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
 Metrics/ClassLength:
-  Enabled: false
+  Max: 1500
 
 Metrics/CyclomaticComplexity:
   Max: 10
@@ -30,12 +45,18 @@ Metrics/LineLength:
   Max: 120
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 20
 
 Naming/UncommunicativeMethodParamName:
   Enabled: false
 
+RSpec/ExampleLength:
+  Max: 10
+
 Style/AsciiComments:
+  Enabled: false
+
+Style/ClassVars:
   Enabled: false
 
 Style/Documentation:
@@ -47,6 +68,18 @@ Style/FrozenStringLiteralComment:
     - 'Rakefile'
 
 Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/LambdaCall:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/ParenthesesAroundCondition:
+  AllowSafeAssignment: false
+
+Style/SymbolArray:
   Exclude:
-    - 'Rakefile'
+    - 'spec/**/*'
 
