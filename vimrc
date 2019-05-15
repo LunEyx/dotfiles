@@ -70,8 +70,10 @@ endif
 " GUI {{{
 set termguicolors
 colorscheme base16-material
+set background=dark
 if has('win32') || has('win64')
     if has('gui_running')
+        set background=light
         colorscheme PaperColor
         " disable
         set guioptions-=T
@@ -211,6 +213,10 @@ call plug#begin('~/.vim/plugged')
 
 " Appearance {{{
 
+" Spacegray Colorscheme {{{
+Plug 'ajh17/Spacegray.vim'
+" }}}
+
 " Airline {{{
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -252,7 +258,7 @@ let g:ale_linters = {
             \   'tex': [],
             \}
 let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
-let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
+let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -std=c++14 -Isrc -Iinlcude'
 let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
@@ -271,6 +277,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-ultisnips'
+Plug 'fgrsnau/ncm2-otherbuf'
 " }}}
 endif
 
@@ -460,6 +467,14 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 " }}}
 
+" C# {{{
+Plug 'OrangeT/vim-csharp', { 'for': 'cs' }
+" }}}
+
+" TypeScript {{{
+Plug 'leafgarland/typescript-vim'
+" }}}
+
 " }}}
 
 " Language Level Support {{{
@@ -503,3 +518,4 @@ if has("nvim")
 endif
 " }}}
 
+au FileType * setlocal formatoptions-=cro

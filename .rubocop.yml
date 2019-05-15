@@ -79,6 +79,9 @@ Style/NumericPredicate:
 Style/ParenthesesAroundCondition:
   AllowSafeAssignment: false
 
+Style/RedundantReturn:
+  Enabled: false
+
 Style/SymbolArray:
   Exclude:
     - 'spec/**/*'
