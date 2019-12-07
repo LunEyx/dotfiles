@@ -13,6 +13,8 @@ set noruler
 set number
 " show relative line number on the left
 set relativenumber
+" ignore case for auto complete filename
+set wildignorecase
 " smartly ignore case when search
 set ignorecase
 set smartcase
@@ -61,6 +63,11 @@ set splitbelow
 set splitright
 " system clipboard synconize with vim
 set clipboard=unnamed
+" if hidden is not set, TextEdit might fall
+set hidden
+" Some servers have issues with backup files
+set nobackup
+set nowritebackup
 if has('nvim')
 " show partial off-screen results in a preview window
 set inccommand=split
@@ -213,10 +220,6 @@ call plug#begin('~/.vim/plugged')
 
 " Appearance {{{
 
-" Spacegray Colorscheme {{{
-Plug 'ajh17/Spacegray.vim'
-" }}}
-
 " Airline {{{
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -245,51 +248,71 @@ let g:airline#extensions#default#section_truncate_width = {
 
 " }}}
 
-" Completion {{{
+" Syntastic Check {{{
 
 " ALE {{{
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 " Write this in your vimrc file
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_linters = {
-            \   'c': ['clang'],
-            \   'cpp': ['clang'],
-            \   'beancount': [],
-            \   'tex': [],
-            \}
-let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
-let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -std=c++14 -Isrc -Iinlcude'
-let g:ale_c_clang_options = '-Wall -Wextra -I src'
+" let g:ale_lint_on_text_changed = 'never'
+" let g:ale_linters = {
+            " \   'c': ['clang'],
+            " \   'cpp': ['clang'],
+            " \   'beancount': [],
+            " \   'tex': [],
+            " \}
+" let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
+" let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -std=c++14 -Isrc -Iinlcude'
+" let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
-if has("nvim")
-" NCM2 {{{
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-
-auto BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
-" set shortmess+=c
-inoremap <expr> <CR> (pumvisible() ? "\<C-y>\<CR>" : "\<CR>")
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-ultisnips'
-Plug 'fgrsnau/ncm2-otherbuf'
 " }}}
-endif
+
+" Completion {{{
+
+" COC {{{
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Use C-f and C-b for scrolling in preview window
+nnoremap <expr><C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
+nnoremap <expr><C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+imap <C-l> <Plug>(coc-snippets-expand)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+" }}}
+
+" }}}
 
 " Snippets {{{
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-j>"
-let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
-let g:UltiSnipsListSnippets = "<C-l>"
-let g:UltiSnipsRemoveSelectModeMappings = 0
+" vim-snippets {{{
+Plug 'honza/vim-snippets'
 " }}}
 
 " }}}
@@ -408,6 +431,12 @@ noremap <leader>sl :call RunLastSpec()<cr>
 noremap <leader>s<space> :call RunAllSpecs()<cr>
 " }}}
 
+" Calendar {{{
+Plug 'itchyny/calendar.vim'
+let g:calendar_first_day = 'sunday'
+let g:calendar_locale = 'ja'
+" }}}
+
 " }}}
 
 " Git {{{
@@ -429,7 +458,7 @@ Plug 'jreybert/vimagit'
 " Language {{{
 
 " Swift {{{
-Plug 'bumaociyuan/vim-swift', { 'for': 'swift' }
+Plug 'keith/swift.vim', { 'for': 'swift' }
 " }}}
 
 " Markdown {{{
@@ -486,7 +515,7 @@ let g:livepreview_engine = 'xelatex' . ' '
 " }}}
 
 " Emmet {{{
-Plug 'mattn/emmet-vim', { 'for': ['html', 'javascript', 'javascript.jsx'] }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'javascript', 'javascript.jsx', 'eruby'] }
 let g:user_emmet_settings = {
       \ 'javascript.jsx' : {
       \   'extends' : 'jsx',
@@ -496,6 +525,16 @@ let g:user_emmet_settings = {
 
 " Ruby-Eval {{{
 Plug 'kmdsbng/vim-ruby-eval', { 'for': 'ruby' }
+" }}}
+
+" C/C++ {{{
+Plug 'ncm2/ncm2-pyclang'
+let g:ncm2_pyclang#library_path = '/usr/local/opt/llvm/lib'
+let g:ncm2_pyclang#database_path = [
+      \ 'compile_commands.json',
+      \ 'build/compile_commands.json'
+      \ ]
+let g:ncm2_pyclang#args_file_path = ['.clang_complete']
 " }}}
 
 " }}}

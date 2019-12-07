@@ -111,5 +111,23 @@ export PATH="/usr/local/Cellar/todo-txt/2.10/bin:$PATH"
 # Add NVM to PATH
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+# For Nand2Tetris
+export PATH="$PATH:$HOME/Documents/learn/nand2tetris/tools"
+# For XAMPP
+# export PATH="/Applications/XAMPP/xamppfiles/bin:$PATH"
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/luneyx/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/luneyx/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/luneyx/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/luneyx/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
