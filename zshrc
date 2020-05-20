@@ -111,8 +111,12 @@ export PATH="/usr/local/Cellar/todo-txt/2.10/bin:$PATH"
 # Add NVM to PATH
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
-# For Nand2Tetris
-export PATH="$PATH:$HOME/Documents/learn/nand2tetris/tools"
+# Add Android to Path
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/tools"
+export PATH="$PATH:$ANDROID_HOME/tools/bin"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
 # For XAMPP
 # export PATH="/Applications/XAMPP/xamppfiles/bin:$PATH"
 # >>> conda initialize >>>

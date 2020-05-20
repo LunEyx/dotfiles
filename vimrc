@@ -251,18 +251,18 @@ let g:airline#extensions#default#section_truncate_width = {
 " Syntastic Check {{{
 
 " ALE {{{
-" Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 " Write this in your vimrc file
-" let g:ale_lint_on_text_changed = 'never'
-" let g:ale_linters = {
-            " \   'c': ['clang'],
-            " \   'cpp': ['clang'],
-            " \   'beancount': [],
-            " \   'tex': [],
-            " \}
-" let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
-" let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -std=c++14 -Isrc -Iinlcude'
-" let g:ale_c_clang_options = '-Wall -Wextra -I src'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_linters = {
+            \   'c': ['clang'],
+            \   'cpp': ['clang'],
+            \   'beancount': [],
+            \   'tex': [],
+            \}
+let g:ale_cpp_clang_options_origin = '-Wall -Wextra -Wno-unused-parameter -std=c++14 -Isrc -Iinlcude'
+let g:ale_cpp_clang_options = '-Wall -Wextra -Wno-unused-parameter -Wno-deprecated-declarations -std=c++14 -Isrc -Iinlcude'
+let g:ale_c_clang_options = '-Wall -Wextra -I src'
 " }}}
 
 " }}}
@@ -357,7 +357,8 @@ Plug 'easymotion/vim-easymotion'
 " Markdown Preview with mathjax support {{{
 Plug 'iamcco/mathjax-support-for-mkdp', { 'for': 'markdown'}
 Plug 'iamcco/markdown-preview.vim', { 'for': 'markdown' }
-let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
+let g:mkdp_echo_preview_url = 1
+" let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
 let g:mkdp_auto_start = 0
 " }}}
 
@@ -435,6 +436,10 @@ noremap <leader>s<space> :call RunAllSpecs()<cr>
 Plug 'itchyny/calendar.vim'
 let g:calendar_first_day = 'sunday'
 let g:calendar_locale = 'ja'
+" }}}
+
+" VIFM {{{
+Plug 'vifm/vifm.vim'
 " }}}
 
 " }}}
