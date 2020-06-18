@@ -1,4 +1,6 @@
 AllCops:
+  NewCops: enable
+
   TargetRubyVersion: 2.6
 
   TargetRailsVersion: 5.2
@@ -40,7 +42,7 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Max: 10
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 80
 
 Metrics/MethodLength:

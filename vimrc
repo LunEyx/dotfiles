@@ -542,6 +542,10 @@ let g:ncm2_pyclang#database_path = [
 let g:ncm2_pyclang#args_file_path = ['.clang_complete']
 " }}}
 
+" CSS {{{
+Plug 'ap/vim-css-color', { 'for': ['css', 'scss'] }
+" }}}
+
 " }}}
 
 " Initialize plugin system

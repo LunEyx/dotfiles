@@ -53,7 +53,7 @@ BULLETTRAIN_CONTEXT_DEFAULT_USERNAME="LunEyx(>﹏<)"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gem taskwarrior catimg git zsh-completions)
+plugins=(gem taskwarrior catimg git zsh-completions rails bundler)
 
 source $ZSH/oh-my-zsh.sh
 
