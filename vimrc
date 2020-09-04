@@ -62,7 +62,7 @@ set diffopt+=vertical
 set splitbelow
 set splitright
 " system clipboard synconize with vim
-set clipboard=unnamed
+set clipboard=unnamedplus
 " if hidden is not set, TextEdit might fall
 set hidden
 " Some servers have issues with backup files
@@ -271,6 +271,19 @@ let g:ale_c_clang_options = '-Wall -Wextra -I src'
 
 " COC {{{
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+  \ 'coc-marketplace',
+  \ 'coc-snippets',
+  \ 'coc-ultisnips',
+  \ 'coc-word',
+  \ 'coc-dictionary',
+  \ 'coc-emoji',
+  \ 'coc-json',
+  \ 'coc-css',
+  \ 'coc-solargraph',
+  \ 'coc-clangd',
+  \ 'coc-tsserver'
+  \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -562,7 +575,6 @@ if has("nvim")
     tmap <C-k> <C-\><C-n><C-k>
     tmap <C-h> <C-\><C-n><C-h>
     tmap <C-l> <C-\><C-n><C-l>
-    let g:python3_host_prog="/usr/local/bin/python3"
 endif
 " }}}
 
